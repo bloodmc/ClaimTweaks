@@ -1,8 +1,8 @@
 package io.github.eufranio.claimtweaks;
 
+import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.claim.Claim;
 import io.github.eufranio.claimtweaks.config.ClaimStorage;
-import me.ryanhamshire.griefprevention.api.claim.Claim;
-import me.ryanhamshire.griefprevention.api.claim.ClaimType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.world.WorldServer;
@@ -36,7 +36,7 @@ public class CommandHandler {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
                     Player p = (Player) sender;
-                    Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
                         ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                         String type = context.<String>getOne("type").get();
                         int id = context.<Integer>getOne("id").get();
@@ -70,7 +70,7 @@ public class CommandHandler {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
                     Player p = (Player) sender;
-                    Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
                     ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                     String type = context.<String>getOne("type").get();
                     boolean asPlayer = context.<Boolean>getOne("as player").orElse(false);
@@ -106,7 +106,7 @@ public class CommandHandler {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
                     Player p = (Player) sender;
-                    Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
                     ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
 
                     sender.sendMessage(Text.of(TextColors.GRAY, "--------------------------------------------------"));
@@ -155,7 +155,7 @@ public class CommandHandler {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
                     Player p = (Player) sender;
-                    Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
                     ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                     data.timeLock = context.<Integer>getOne("time").get();
                     sender.sendMessage(Text.of(TextColors.GREEN, "Successfully updated the time lock of this claim!"));
@@ -170,7 +170,7 @@ public class CommandHandler {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
                     Player p = (Player) sender;
-                    Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
                     ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                     data.clearWeather = !data.clearWeather;
                     if (!data.clearWeather) {

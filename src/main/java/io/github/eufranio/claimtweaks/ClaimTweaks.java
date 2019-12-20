@@ -3,6 +3,9 @@ package io.github.eufranio.claimtweaks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.claim.ClaimTypes;
 import eu.crushedpixel.sponge.packetgate.api.event.PacketEvent;
 import eu.crushedpixel.sponge.packetgate.api.listener.PacketListenerAdapter;
 import eu.crushedpixel.sponge.packetgate.api.registry.PacketConnection;
@@ -10,10 +13,6 @@ import eu.crushedpixel.sponge.packetgate.api.registry.PacketGate;
 import io.github.eufranio.claimtweaks.config.ClaimStorage;
 import io.github.eufranio.claimtweaks.config.ConfigManager;
 import io.netty.buffer.Unpooled;
-import me.ryanhamshire.griefprevention.GriefPrevention;
-import me.ryanhamshire.griefprevention.api.GriefPreventionApi;
-import me.ryanhamshire.griefprevention.api.claim.Claim;
-import me.ryanhamshire.griefprevention.api.claim.ClaimType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketChangeGameState;
@@ -23,7 +22,6 @@ import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.event.CauseStackManager;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -38,17 +36,18 @@ import java.util.UUID;
 @Plugin(
         id = "claimtweaks",
         name = "ClaimTweaks",
-        description = "Simple plugin that adds some tweaks to GriefPrevention claims",
+        description = "Simple plugin that adds some tweaks to GriefDefender claims",
         authors = {
                 "Eufranio"
         },
         dependencies = {
-                @Dependency(id = "griefprevention"),
+                @Dependency(id = "griefdefender"),
                 @Dependency(id = "packetgate")
         }
 )
 public class ClaimTweaks extends PacketListenerAdapter {
 
+    @SuppressWarnings("unused")
     @Inject
     private Logger logger;
 
@@ -58,8 +57,6 @@ public class ClaimTweaks extends PacketListenerAdapter {
 
     @Inject
     public GuiceObjectMapperFactory mapper;
-
-    public static GriefPreventionApi API;
 
     private ConfigManager<ClaimStorage> storage;
     private static ClaimTweaks instance;
@@ -74,14 +71,13 @@ public class ClaimTweaks extends PacketListenerAdapter {
         });
         instance = this;
         this.storage = new ConfigManager<>(ClaimStorage.class, configDir, "ClaimData.conf", mapper, true, this);
-        API = GriefPrevention.getApi();
         try {
             this.totalWorldTime = SPacketTimeUpdate.class.getDeclaredField("field_149369_a");
             this.totalWorldTime.setAccessible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Sponge.getEventManager().registerListeners(this, new ClaimEventHandlers());
+        GriefDefender.getEventManager().register(new ClaimEventHandlers());
         Sponge.getEventManager().registerListeners(this, new PlayerEventHandlers());
         CommandHandler.registerCommands(this);
     }
@@ -134,8 +130,8 @@ public class ClaimTweaks extends PacketListenerAdapter {
     }
 
     public static void updateSettings(Claim claim, UUID player) {
-        if (claim.getType() != ClaimType.WILDERNESS) {
-            ClaimStorage.Data data = ClaimTweaks.getStorage().of(claim.getUniqueId());
+        if (claim.getType() != ClaimTypes.WILDERNESS) {
+            ClaimStorage.Data data = ClaimStorage.of(claim.getUniqueId());
             if (data != null) {
                 if (data.timeLock != 0) {
                     ClaimTweaks.putOrUpdateTime(player, data.timeLock);

@@ -1,22 +1,30 @@
 package io.github.eufranio.claimtweaks;
 
+import com.griefdefender.api.User;
+import com.griefdefender.api.claim.Claim;
+import com.griefdefender.api.event.BorderClaimEvent;
 import io.github.eufranio.claimtweaks.config.ClaimStorage;
-import me.ryanhamshire.griefprevention.api.claim.Claim;
-import me.ryanhamshire.griefprevention.api.claim.ClaimType;
-import me.ryanhamshire.griefprevention.api.event.BorderClaimEvent;
+import net.kyori.event.method.annotation.Subscribe;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.filter.cause.First;
-import org.spongepowered.api.event.filter.cause.Root;
 
 /**
  * Created by Frani on 14/01/2018.
  */
 public class ClaimEventHandlers {
 
-    @Listener
-    public void onClaimEnter(BorderClaimEvent e, @First Player player) {
+    @Subscribe
+    public void onClaimEnter(BorderClaimEvent e) {
+        final User user = e.getUser().orElse(null);
+        if (user == null) {
+            return;
+        }
+
+        final Player player = Sponge.getServer().getPlayer(user.getUniqueId()).orElse(null);
+        if (player == null) {
+            return;
+        }
+
         ClaimTweaks.updateSettings(e.getEnterClaim(), player.getUniqueId());
 
         if (player.hasPermission("claimtweaks.bypass")) return;

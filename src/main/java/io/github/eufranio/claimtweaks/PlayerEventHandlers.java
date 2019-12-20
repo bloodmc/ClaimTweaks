@@ -1,7 +1,7 @@
 package io.github.eufranio.claimtweaks;
 
-import me.ryanhamshire.griefprevention.api.claim.Claim;
-import me.ryanhamshire.griefprevention.api.claim.ClaimType;
+import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.claim.Claim;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.Root;
@@ -19,7 +19,7 @@ public class PlayerEventHandlers {
 
     @Listener
     public void onJoin(ClientConnectionEvent.Join event, @Root Player p) {
-        Claim claim = ClaimTweaks.API.getClaimManager(p.getWorld()).getClaimAt(p.getLocation());
+        Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
         ClaimTweaks.updateSettings(claim, p.getUniqueId());
     }
 

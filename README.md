@@ -1,5 +1,5 @@
 ## ClaimTweaks
-ClaimTweaks is an addon to [GriefPrevention](https://forums.spongepowered.org/t/griefprevention-official-thread-1-10-1-11-1-12-town-wecui-support/1123) that adds some simple stuff to claims, like per-claim weather, per-claim time, commands on enter/exit, etc. Those features are supposed to be used only by admins, but they will also work if you give the proper permissions to your players. You also don't need to change anything on config files, just drop the plugin on your plugins/mods folder and it's ready!
+ClaimTweaks is an addon to [GriefDefender](https://github.com/bloodmc/GriefDefender) that adds some simple stuff to claims, like per-claim weather, per-claim time, commands on enter/exit, etc. Those features are supposed to be used only by admins, but they will also work if you give the proper permissions to your players. You also don't need to change anything on config files, just drop the plugin on your plugins/mods folder and it's ready!
 
 ### Features
 * Clear the weather of the player when he enters a specific claim (such as your spawn)
@@ -9,7 +9,7 @@ ClaimTweaks is an addon to [GriefPrevention](https://forums.spongepowered.org/t/
 * Bypass commands by granting the `claimtweaks.bypass` permission
 
 ### Basic Setup
-1. Install [GriefPrevention](https://forums.spongepowered.org/t/griefprevention-official-thread-1-10-1-11-1-12-town-wecui-support/1123) and [PacketGate](https://github.com/CrushedPixel/PacketGate/releases) on your server (they are both dependencies, don't forget it!)
+1. Install [GriefDefender](https://github.com/bloodmc/GriefDefender) and [PacketGate](https://github.com/CrushedPixel/PacketGate/releases) on your server (they are both dependencies, don't forget it!)
 2. Say you want to change the time of your spawn to always day. Go to your spawn claim and run **/ctweaks setTime 6000**, you're done!
 
 ### Command Usage and Permissions (use inside the target claim)

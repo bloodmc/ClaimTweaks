@@ -16,7 +16,14 @@ plugins {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { 
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
+    maven {
+        name = 'glare'
+        url = 'https://repo.glaremasters.me/repository/bloodshot'
+    }
 }
 
 sourceCompatibility = 1.8
@@ -31,10 +38,8 @@ group = pluginGroup
 version = pluginVersion
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
-    compile ('me.ryanhamshire:griefprevention:1.12.2-4.3.0.630:api') {
-        exclude group: 'org.bstats', module: 'bstats-sponge'
-    }
+    compile 'org.spongepowered:spongeapi:7.2.0-SNAPSHOT'
+    compileOnly 'com.griefdefender:api:1.0.0-20191219.230903-12'
     compile 'com.github.CrushedPixel:PacketGate:0.1.1'
 }
 
