@@ -19,7 +19,7 @@ public class PlayerEventHandlers {
 
     @Listener
     public void onJoin(ClientConnectionEvent.Join event, @Root Player p) {
-        Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
+        final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
         ClaimTweaks.updateSettings(claim, p.getUniqueId());
     }
 

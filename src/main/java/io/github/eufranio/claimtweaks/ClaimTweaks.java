@@ -3,7 +3,6 @@ package io.github.eufranio.claimtweaks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.ClaimTypes;
 import eu.crushedpixel.sponge.packetgate.api.event.PacketEvent;
@@ -65,6 +64,7 @@ public class ClaimTweaks extends PacketListenerAdapter {
 
     @Listener
     public void onServerStart(GamePostInitializationEvent event) {
+        this.logger.info("Booting...");
         Sponge.getServiceManager().provide(PacketGate.class).ifPresent(p -> {
             p.registerListener(this, ListenerPriority.DEFAULT, SPacketTimeUpdate.class);
             p.registerListener(this, ListenerPriority.DEFAULT, SPacketChangeGameState.class);
@@ -77,9 +77,10 @@ public class ClaimTweaks extends PacketListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        GriefDefender.getEventManager().register(new ClaimEventHandlers());
+        new ClaimEventHandlers();
         Sponge.getEventManager().registerListeners(this, new PlayerEventHandlers());
         CommandHandler.registerCommands(this);
+        this.logger.info("Successfully loaded.");
     }
 
     public static ClaimStorage getStorage() {

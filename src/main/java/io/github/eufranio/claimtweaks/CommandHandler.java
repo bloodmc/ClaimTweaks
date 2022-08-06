@@ -35,25 +35,25 @@ public class CommandHandler {
                     if (!(sender instanceof Player)) {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
-                    Player p = (Player) sender;
-                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
-                        ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
-                        String type = context.<String>getOne("type").get();
-                        int id = context.<Integer>getOne("id").get();
-                        boolean asPlayer = context.<Boolean>getOne("as player").orElse(false);
-                        if (type.equalsIgnoreCase("enter")) {
-                            if (asPlayer) {
-                                data.playerEnterCommands.remove(id);
-                            } else {
-                                data.enterCommands.remove(id);
-                            }
-                            sender.sendMessage(Text.of(TextColors.GREEN, "Successfully removed the command to this claim!"));
-                        } else if (type.equalsIgnoreCase("leave")) {
-                            data.leaveCommands.remove(id);
-                            sender.sendMessage(Text.of(TextColors.GREEN, "Successfully removed the command to this claim!"));
+                    final Player p = (Player) sender;
+                    final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
+                    final ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
+                    final String type = context.<String>getOne("type").get();
+                    final int id = context.<Integer>getOne("id").get();
+                    boolean asPlayer = context.<Boolean>getOne("as player").orElse(false);
+                    if (type.equalsIgnoreCase("enter")) {
+                        if (asPlayer) {
+                            data.playerEnterCommands.remove(id);
                         } else {
-                            sender.sendMessage(Text.of(TextColors.RED, "Unknown type! Use enter/leave!"));
+                            data.enterCommands.remove(id);
                         }
+                        sender.sendMessage(Text.of(TextColors.GREEN, "Successfully removed the command to this claim!"));
+                    } else if (type.equalsIgnoreCase("leave")) {
+                        data.leaveCommands.remove(id);
+                        sender.sendMessage(Text.of(TextColors.GREEN, "Successfully removed the command to this claim!"));
+                    } else {
+                        sender.sendMessage(Text.of(TextColors.RED, "Unknown type! Use enter/leave!"));
+                    }
                     return CommandResult.success();
                 })
                 .build();
@@ -69,11 +69,11 @@ public class CommandHandler {
                     if (!(sender instanceof Player)) {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
-                    Player p = (Player) sender;
-                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
-                    ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
-                    String type = context.<String>getOne("type").get();
-                    boolean asPlayer = context.<Boolean>getOne("as player").orElse(false);
+                    final Player p = (Player) sender;
+                    final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
+                    final ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
+                    final String type = context.<String>getOne("type").get();
+                    final boolean asPlayer = context.<Boolean>getOne("as player").orElse(false);
                     try {
                         if (type.equalsIgnoreCase("enter")) {
                             if (asPlayer) {
@@ -105,9 +105,9 @@ public class CommandHandler {
                     if (!(sender instanceof Player)) {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
-                    Player p = (Player) sender;
-                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
-                    ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
+                    final Player p = (Player) sender;
+                    final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
+                    final ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
 
                     sender.sendMessage(Text.of(TextColors.GRAY, "--------------------------------------------------"));
 
@@ -154,9 +154,9 @@ public class CommandHandler {
                     if (!(sender instanceof Player)) {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
-                    Player p = (Player) sender;
-                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
-                    ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
+                    final Player p = (Player) sender;
+                    final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
+                    final ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                     data.timeLock = context.<Integer>getOne("time").get();
                     sender.sendMessage(Text.of(TextColors.GREEN, "Successfully updated the time lock of this claim!"));
                     return CommandResult.success();
@@ -169,9 +169,9 @@ public class CommandHandler {
                     if (!(sender instanceof Player)) {
                         throw new CommandException(Text.of("You must be a player to run this command!"));
                     }
-                    Player p = (Player) sender;
-                    Claim claim = GriefDefender.getCore().getClaimManager(p.getWorld().getUniqueId()).getClaimAt(p.getLocation().getBlockPosition());
-                    ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
+                    final Player p = (Player) sender;
+                    final Claim claim = GriefDefender.getCore().getClaimAt(p.getLocation());
+                    final ClaimStorage.Data data = ClaimStorage.getOrCreateData(claim.getUniqueId());
                     data.clearWeather = !data.clearWeather;
                     if (!data.clearWeather) {
                         ((EntityPlayerMP) p).connection.sendPacket(new SPacketChangeGameState(7, ((WorldServer) p.getWorld()).getRainStrength(1)));
